@@ -3,10 +3,18 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./notes.db")
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
-# SQLite needs check_same_thread=False, Postgres does not
-if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
+if not SQLALCHEMY_DATABASE_URL:
+    if os.getenv("VERCEL"):
+        # Vercel filesystem is read-only.
+        # Use pure in-memory SQLite (non-persistent).
+        SQLALCHEMY_DATABASE_URL = "sqlite://"
+    else:
+        SQLALCHEMY_DATABASE_URL = "sqlite:///./notes.db"
+
+# SQLite needs check_same_thread=False
+if "sqlite" in SQLALCHEMY_DATABASE_URL:
     engine = create_engine(
         SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
     )

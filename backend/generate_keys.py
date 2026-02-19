@@ -9,14 +9,14 @@ def generate_vapid_keys():
     public_key = private_key.public_key()
 
     private_bytes = private_key.private_bytes(
-        encoding=serialization.Encoding.X962,
-        format=serialization.PrivateFormat.Raw,
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption()
     )
     
     public_bytes = public_key.public_bytes(
         encoding=serialization.Encoding.X962,
-        format=serialization.PublicFormat.UncompressedPoints
+        format=serialization.PublicFormat.UncompressedPoint
     )
 
     return {

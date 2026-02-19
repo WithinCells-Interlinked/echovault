@@ -19,12 +19,31 @@ body {
   padding: 40px 20px;
 }
 
-h1 {
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid var(--border);
   padding-bottom: 10px;
   margin-bottom: 30px;
-  font-weight: 300;
-  letter-spacing: 2px;
+}
+
+.header-flex h1 {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.subscribe-btn {
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 5px 15px;
+  font-size: 0.8rem;
+}
+
+.subscribe-btn:hover {
+  background: var(--accent);
+  color: white;
 }
 
 .note-form {

@@ -7,3 +7,134 @@
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: http://192.168.22.41:5173/
+
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 4.02s
+https://frontend-lzt1q95ds-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 4.01s
+https://frontend-6ppvviz1b-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 3.99s
+https://frontend-rbnoqdxgr-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 3.96s
+https://frontend-nuhzuu8tp-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 4.00s
+https://frontend-lkiex80a8-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 4.04s
+https://frontend-eubkpk52v-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 3.94s
+https://frontend-qq71wwfu9-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 4.43s
+https://frontend-1fzcdqzxc-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 3.99s
+https://frontend-c3813ogn1-withincells-interlinkeds-projects.vercel.app
+> frontend@0.0.0 build
+> vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 31 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.46 kB │ gzip:  0.29 kB
+dist/assets/index-cCwcr7Mw.css    2.44 kB │ gzip:  1.02 kB
+dist/assets/index-JzrCu2A7.js   195.70 kB │ gzip: 61.60 kB
+✓ built in 4.00s
+https://frontend-3x0wzbdyo-withincells-interlinkeds-projects.vercel.app

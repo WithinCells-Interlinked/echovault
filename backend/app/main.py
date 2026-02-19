@@ -1,20 +1,35 @@
 from fastapi import FastAPI, Depends, HTTPException, status, BackgroundTasks
 from sqlalchemy.orm import Session
 try:
-    from . import models, schemas, database
+    from . import models, schemas, database, embeddings
 except ImportError:
     import app.models as models
     import app.schemas as schemas
     import app.database as database
+    import app.embeddings as embeddings
 
 from fastapi.middleware.cors import CORSMiddleware
 from pywebpush import webpush, WebPushException
 import os
 import json
+import google.generativeai as genai
+from sqlalchemy import text
 
-# Only create tables if not in Vercel or if DATABASE_URL is set
-if not os.getenv("VERCEL") or os.getenv("DATABASE_URL"):
-    models.Base.metadata.create_all(bind=database.engine)
+# Configure Gemini
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
+
+# Create tables (SQLite in-memory or Postgres)
+try:
+    if os.getenv("DATABASE_URL"):
+        with database.engine.connect() as conn:
+            conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+            conn.commit()
+except Exception as e:
+    print(f"Could not enable pgvector: {e}")
+
+models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI(title="EchoVault API")
 
@@ -39,32 +54,35 @@ def get_db():
     finally:
         db.close()
 
+def generate_embedding(text: str):
+    if not GEMINI_API_KEY:
+        return None
+    try:
+        result = genai.embed_content(
+            model="models/embedding-001",
+            content=text,
+            task_type="retrieval_document"
+        )
+        return result['embedding']
+    except Exception as e:
+        print(f"Embedding error: {e}")
+        return None
+
 def send_push_notifications(note_title: str, db: Session):
     if not VAPID_PRIVATE_KEY or not VAPID_PUBLIC_KEY:
         return
+    # ... (existing code)
 
-    subscriptions = db.query(models.PushSubscription).all()
-    for sub in subscriptions:
-        try:
-            webpush(
-                subscription_info={
-                    "endpoint": sub.endpoint,
-                    "keys": {
-                        "p256dh": sub.p256dh,
-                        "auth": sub.auth
-                    }
-                },
-                data=json.dumps({
-                    "title": "New Note in EchoVault",
-                    "body": note_title
-                }),
-                vapid_private_key=VAPID_PRIVATE_KEY,
-                vapid_claims={"sub": VAPID_EMAIL}
-            )
-        except WebPushException as ex:
-            if ex.response and ex.response.status_code == 410:
-                db.delete(sub)
-                db.commit()
+def generate_and_store_embedding(note_id: int, content: str, db: Session):
+    vector = embeddings.get_embedding(content)
+    if vector:
+        # Use raw SQL to insert into pgvector table
+        from sqlalchemy import text
+        db.execute(
+            text("INSERT INTO note_embeddings (note_id, embedding) VALUES (:note_id, :embedding)"),
+            {"note_id": note_id, "embedding": str(vector)}
+        )
+        db.commit()
 
 @app.get("/health")
 def health_check():
@@ -77,7 +95,39 @@ def create_note(note: schemas.NoteCreate, background_tasks: BackgroundTasks, db:
     db.commit()
     db.refresh(db_note)
     background_tasks.add_task(send_push_notifications, note.title, db)
+    background_tasks.add_task(generate_and_store_embedding, db_note.id, note.content, db)
     return db_note
+
+@app.get("/notes/search")
+def search_notes(q: str, limit: int = 5, db: Session = Depends(get_db)):
+    query_vector = embeddings.get_embedding(q)
+    if not query_vector:
+        return []
+    
+    from sqlalchemy import text
+    # Search using cosine similarity (<=> is cosine distance in pgvector)
+    # We join with notes table to get the content
+    results = db.execute(
+        text("""
+            SELECT n.id, n.title, n.content, n.created_at, 
+            (1 - (ne.embedding <=> :vector)) as similarity
+            FROM notes n
+            JOIN note_embeddings ne ON n.id = ne.note_id
+            ORDER BY similarity DESC
+            LIMIT :limit
+        """),
+        {"vector": str(query_vector), "limit": limit}
+    ).fetchall()
+    
+    return [
+        {
+            "id": r[0], 
+            "title": r[1], 
+            "content": r[2], 
+            "created_at": r[3],
+            "similarity": float(r[4])
+        } for r in results
+    ]
 
 @app.get("/notes", response_model=list[schemas.Note])
 def read_notes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

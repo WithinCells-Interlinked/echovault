@@ -9,3 +9,7 @@ anyio>=4.2.0
 pywebpush>=1.14.0
 cryptography>=42.0.0
 psycopg2-binary>=2.9.9
+google-generativeai>=0.3.2
+pgvector>=0.2.4
+supabase>=1.0.0
+gotrue>=1.0.0
