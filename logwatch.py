@@ -1,12 +1,12 @@
 """
-Logwatch - Real-time activity monitor for Molt's autonomous dev process
+Logwatch - Real-time activity monitor for Agent's autonomous dev process
 Tracks every action, file write, and progress step in real-time.
 """
 import time
 import datetime
 import os
 
-LOG_FILE = "/home/pi/clawd/projects/echovault/activity.log"
+LOG_FILE = "/app/projects/echovault/activity.log"
 
 # Ensure log directory exists
 os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
@@ -47,4 +47,4 @@ if __name__ == "__main__":
     # Keep alive loop to show we're still active
     while True:
         time.sleep(30)
-        log_action("HEARTBEAT", "Molt is still building...")
+        log_action("HEARTBEAT", "Agent is still building...")
