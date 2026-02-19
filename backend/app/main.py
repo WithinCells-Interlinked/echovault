@@ -23,6 +23,10 @@ def get_db():
     finally:
         db.close()
 
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "version": "1.0.0"}
+
 @app.post("/notes", response_model=schemas.Note)
 def create_note(note: schemas.NoteCreate, db: Session = Depends(get_db)):
     db_note = models.Note(title=note.title, content=note.content)
