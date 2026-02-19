@@ -98,11 +98,11 @@ def create_note(note: schemas.NoteCreate, background_tasks: BackgroundTasks, db:
     background_tasks.add_task(generate_and_store_embedding, db_note.id, note.content, db)
     return db_note
 
-@app.get("/notes/search")
-def search_notes(q: str, limit: int = 5, db: Session = Depends(get_db)):
+@app.get("/query", response_model=list[schemas.NoteSearchResult])
+def query_notes(q: str, limit: int = 5, db: Session = Depends(get_db)):
     query_vector = embeddings.get_embedding(q)
     if not query_vector:
-        return []
+        raise HTTPException(status_code=400, detail="Could not generate embedding for query.")
     
     from sqlalchemy import text
     # Search using cosine similarity (<=> is cosine distance in pgvector)
@@ -120,13 +120,13 @@ def search_notes(q: str, limit: int = 5, db: Session = Depends(get_db)):
     ).fetchall()
     
     return [
-        {
-            "id": r[0], 
-            "title": r[1], 
-            "content": r[2], 
-            "created_at": r[3],
-            "similarity": float(r[4])
-        } for r in results
+        schemas.NoteSearchResult(
+            id=r[0], 
+            title=r[1], 
+            content=r[2], 
+            created_at=r[3],
+            similarity=float(r[4])
+        ) for r in results
     ]
 
 @app.get("/notes", response_model=list[schemas.Note])
