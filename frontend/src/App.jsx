@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { getNotes, createNote, deleteNote as apiDeleteNote } from './services/api'
 import './App.css'
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
 
   const fetchNotes = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/notes')
-      setNotes(res.data)
+      const data = await getNotes()
+      setNotes(data)
     } catch (err) {
       console.error(err)
     }
@@ -20,7 +20,7 @@ function App() {
     e.preventDefault()
     if (!title || !content) return
     try {
-      await axios.post('http://localhost:8000/notes', { title, content })
+      await createNote({ title, content })
       setTitle('')
       setContent('')
       fetchNotes()
@@ -29,9 +29,9 @@ function App() {
     }
   }
 
-  const deleteNote = async (id) => {
+  const handleDeleteNote = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/notes/${id}`)
+      await apiDeleteNote(id)
       fetchNotes()
     } catch (err) {
       console.error(err)
@@ -65,7 +65,7 @@ function App() {
           <div key={note.id} className="note-card">
             <h3>{note.title}</h3>
             <p>{note.content}</p>
-            <button onClick={() => deleteNote(note.id)} className="delete-btn">x</button>
+            <button onClick={() => handleDeleteNote(note.id)} className="delete-btn">x</button>
           </div>
         ))}
       </div>
