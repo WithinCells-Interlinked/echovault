@@ -40,6 +40,18 @@ def read_notes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     notes = db.query(models.Note).offset(skip).limit(limit).all()
     return notes
 
+@app.post("/subscriptions", response_model=schemas.PushSubscription)
+def subscribe(subscription: schemas.PushSubscriptionCreate, db: Session = Depends(get_db)):
+    db_sub = models.PushSubscription(
+        endpoint=subscription.endpoint,
+        p256dh=subscription.p256dh,
+        auth=subscription.auth
+    )
+    db.add(db_sub)
+    db.commit()
+    db.refresh(db_sub)
+    return db_sub
+
 @app.put("/notes/{note_id}", response_model=schemas.Note)
 def update_note(note_id: int, note: schemas.NoteUpdate, db: Session = Depends(get_db)):
     db_note = db.query(models.Note).filter(models.Note.id == note_id).first()

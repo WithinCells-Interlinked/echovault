@@ -19,3 +19,18 @@ class Note(NoteBase):
 
     class Config:
         from_attributes = True
+
+class PushSubscriptionBase(BaseModel):
+    endpoint: str
+    p256dh: str
+    auth: str
+
+class PushSubscriptionCreate(PushSubscriptionBase):
+    pass
+
+class PushSubscription(PushSubscriptionBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

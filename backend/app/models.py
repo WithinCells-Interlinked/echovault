@@ -9,3 +9,12 @@ class Note(Base):
     title = Column(String, index=True)
     content = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class PushSubscription(Base):
+    __tablename__ = "push_subscriptions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    endpoint = Column(String, unique=True, index=True)
+    p256dh = Column(String)
+    auth = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
