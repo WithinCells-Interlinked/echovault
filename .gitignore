@@ -1,6 +1,9 @@
-backend/venv/
 __pycache__/
-*.pyc
-.DS_Store
-node_modules/
+*.py[cod]
+*.class
+venv/
+.env
+notes.db
+.vercel
 dist/
+node_modules/
