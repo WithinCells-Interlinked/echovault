@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000';
+const API_URL = window.location.origin.includes('localhost') ? 'http://localhost:8000' : '/api';
 
 export const getNotes = async () => {
   const response = await fetch(`${API_URL}/notes`);
