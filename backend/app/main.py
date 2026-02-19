@@ -36,6 +36,21 @@ def read_notes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     notes = db.query(models.Note).offset(skip).limit(limit).all()
     return notes
 
+@app.put("/notes/{note_id}", response_model=schemas.Note)
+def update_note(note_id: int, note: schemas.NoteUpdate, db: Session = Depends(get_db)):
+    db_note = db.query(models.Note).filter(models.Note.id == note_id).first()
+    if not db_note:
+        raise HTTPException(status_code=404, detail="Note not found")
+    
+    if note.title is not None:
+        db_note.title = note.title
+    if note.content is not None:
+        db_note.content = note.content
+        
+    db.commit()
+    db.refresh(db_note)
+    return db_note
+
 @app.delete("/notes/{note_id}")
 def delete_note(note_id: int, db: Session = Depends(get_db)):
     db_note = db.query(models.Note).filter(models.Note.id == note_id).first()
